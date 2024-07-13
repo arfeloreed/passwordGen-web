@@ -2,7 +2,7 @@ import React from "react";
 
 function Navbar() {
   return (
-    <nav className="navbar navbar-expand-lg text-bg-primary">
+    <nav className="navbar navbar-expand-lg text-bg-primary" data-bs-theme="dark">
       <div className="container my-1">
         <a href="/" className="navbar-brand">
           PasswordGen
@@ -39,12 +39,12 @@ function Navbar() {
                 </a>
               </li>
               <li className="nav-item">
-                <a href="" className="nav-link">
+                <a href="/" className="nav-link">
                   Login
                 </a>
               </li>
               <li className="nav-item">
-                <a href="" className="nav-link">
+                <a href="/" className="nav-link">
                   Logout
                 </a>
               </li>
