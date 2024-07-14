@@ -2,7 +2,8 @@ CREATE DATABASE passwords;
 DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(250) NOT NULL,
+    name VARCHAR(250) NOT NULL,
+    email VARCHAR(250) NOT NULL,
     google_id TEXT NOT NULL UNIQUE
 );
 DROP TABLE IF EXISTS passwords;
