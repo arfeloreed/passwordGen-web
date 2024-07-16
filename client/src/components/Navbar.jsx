@@ -40,11 +40,6 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <a href="/" className="nav-link">
-                  Login
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="/" className="nav-link">
                   Logout
                 </a>
               </li>

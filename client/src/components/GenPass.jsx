@@ -22,6 +22,7 @@ function GenPass() {
         className="form-control form-control-lg"
         placeholder="Click generate to get your password"
         value={password}
+        readOnly
       />
       <button
         type="button"
