@@ -20,19 +20,69 @@ const db = new pg.Client({
   password: process.env.DB_PASS,
   port: process.env.DB_PORT,
 });
-(async () => {
-  await db.connect();
-})();
+(async () => await db.connect())();
 
 // routes
 // check and get user email
 app.get("/users/:email", async (req, res) => {
+  const { email } = req.params;
   try {
-    const { email } = req.params;
-    return res.json("success");
+    const query = "SELECT name, email FROM users where email=$1";
+    const result = await db.query(query, [email.toLowerCase()]);
+    if (result.rows.length !== 0) return res.json({ message: "login" });
+    else return res.json({ message: "register" });
   } catch (err) {
     console.error("Can't get email: ", err.message);
-    return res.json("error");
+    return res.json({ message: "error" });
+  }
+});
+// register a user through google
+app.post("/register/google", async (req, res) => {
+  const { name, email, google_id } = req.body;
+  try {
+    const query =
+      "INSERT INTO users(name, email, google_id) VALUES($1, $2, $3) RETURNING *";
+    const result = await db.query(query, [name, email.toLowerCase(), google_id]);
+    const data = result.rows[0];
+    if (data) {
+      const token = jwt.sign(
+        {
+          id: data.user_id,
+          name: data.name,
+          email: data.email,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      return res.json({ message: "success", token });
+    } else return res.json({ message: "error" });
+  } catch (err) {
+    console.error("Can't register user: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// logging in a user
+app.post("/login/google", async (req, res) => {
+  const { google_id } = req.body;
+  try {
+    const query = "SELECT * FROM users WHERE google_id=$1";
+    const result = await db.query(query, [google_id]);
+    const data = result.rows[0];
+    if (data) {
+      const token = jwt.sign(
+        {
+          id: data.user_id,
+          name: data.name,
+          email: data.email,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      return res.json({ message: "success", token });
+    } else return res.json({ message: "error" });
+  } catch (err) {
+    console.error("Can't login user: ", err.message);
+    return res.json({ message: "error" });
   }
 });
 
