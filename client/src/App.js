@@ -6,6 +6,7 @@ import AuthProvider from "react-auth-kit";
 // routes
 import Home from "./routes/Home";
 import Error from "./routes/Error";
+import Dashboard from "./routes/Dashboard";
 
 function App() {
   const store = createStore({
@@ -24,6 +25,10 @@ function App() {
     {
       path: "/error",
       element: <Error />,
+    },
+    {
+      path: "/dashboard",
+      element: <Dashboard />,
     },
   ]);
 
