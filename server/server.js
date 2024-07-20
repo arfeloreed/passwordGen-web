@@ -61,7 +61,7 @@ app.post("/register/google", async (req, res) => {
     return res.json({ message: "error" });
   }
 });
-// logging in a user
+// logging in a user through google
 app.post("/login/google", async (req, res) => {
   const { google_id } = req.body;
   try {
@@ -82,6 +82,33 @@ app.post("/login/google", async (req, res) => {
     } else return res.json({ message: "error" });
   } catch (err) {
     console.error("Can't login user: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// adding a password to user
+app.post("/:user_id/add/password", async (req, res) => {
+  const { user_id } = req.params;
+  const { website, email, password } = req.body;
+  try {
+    const query =
+      "INSERT INTO passwords(user_id,website,email,password) VALUES($1,$2,$3,$4)";
+    await db.query(query, [user_id, website, email, password]);
+    return res.json({ message: "success" });
+  } catch (err) {
+    console.error("Can't add password: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// get all passwords for user
+app.get("/dashboard/:user_id/passwords", async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const query =
+      "SELECT password_id,website,email,password FROM passwords WHERE user_id=$1";
+    const result = await db.query(query, [parseInt(user_id)]);
+    return res.json({ message: "success", data: result.rows });
+  } catch (err) {
+    console.error("Can't get passwords for user: ", err.message);
     return res.json({ message: "error" });
   }
 });
