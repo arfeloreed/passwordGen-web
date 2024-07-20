@@ -24,3 +24,4 @@ select website, email, prev_passwords.password
 from passwords 
 full join prev_passwords on passwords.password_id = prev_passwords.password_id 
 where email='reed';
+select website, email, password from passwords where user_id=1;
