@@ -36,7 +36,7 @@ function AddPass() {
       <div className="mt-5 d-flex flex-column align-items-center">
         <p>Generate a password for a new account:</p>
         <form className="genpassBlock" onSubmit={(e) => handleSubmit(e)}>
-          <div className="input-group mb-2">
+          <div className="input-group mb-1">
             <label className="input-group-text" htmlFor="website">
               Website
             </label>
@@ -52,7 +52,7 @@ function AddPass() {
             />
           </div>
 
-          <div className="input-group mb-2">
+          <div className="input-group mb-1">
             <label className="input-group-text" htmlFor="email">
               Email
             </label>

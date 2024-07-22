@@ -2,4 +2,15 @@
   background: url("../images/padded.webp");
   min-height: 95vh;
   position: relative;
+
+  .search {
+    position: relative;
+
+    svg {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      color: rgb(85, 84, 84);
+    }
+  }
 }

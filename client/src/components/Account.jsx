@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Account({ website, email }) {
   return (
-    <div className="input-group mb-1">
+    <Link className="input-group mb-1 text-decoration-none">
       <span className="input-group-text">Website</span>
-      <input type="text" className="form-control" readOnly value={website} />
+      <div className="form-control overflow-hidden">{website}</div>
       <span className="input-group-text">Email</span>
-      <input type="text" className="form-control" readOnly value={email} />
-    </div>
+      <div className="form-control overflow-hidden">{email}</div>
+    </Link>
   );
 }
 

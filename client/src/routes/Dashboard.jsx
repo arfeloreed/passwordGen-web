@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 // components
 import Navbar from "../components/Navbar";
 import AddPass from "../components/AddPass";
@@ -11,13 +13,12 @@ function Dashboard() {
   const auth = useAuthUser();
   const url = process.env.REACT_APP_URL || "http://localhost:5000";
   const [accounts, setAccounts] = useState([]);
+  const [search, setSearch] = useState("");
 
   async function getAccounts() {
     try {
       const res = await axios.get(`${url}/dashboard/${auth.uid}/passwords`);
-      if (res.data.message === "success") {
-        setAccounts(res.data.data);
-      }
+      if (res.data.message === "success") setAccounts(res.data.data);
     } catch (err) {
       console.log(err.message);
       alert("Error connecting to server.");
@@ -26,7 +27,11 @@ function Dashboard() {
 
   useEffect(() => {
     getAccounts();
-  }, []);
+  }, [accounts]);
+
+  const searchAccounts =
+    accounts.length > 0 &&
+    accounts.filter((account) => account.website.toLowerCase().includes(search));
 
   return (
     <>
@@ -39,16 +44,42 @@ function Dashboard() {
         </div>
 
         <div className="container my-5 genpassBlock">
-          <p>All accounts:</p>
-          {accounts.map((account) => {
-            return (
-              <Account
-                key={account.password_id}
-                website={account.website}
-                email={account.email}
-              />
-            );
-          })}
+          <span className="search">
+            <input
+              type="search"
+              placeholder="Search site name..."
+              className="form-control mb-3 pe-5"
+              name="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </span>
+          {search ? (
+            searchAccounts.length > 0 ? (
+              searchAccounts.map((account) => {
+                return (
+                  <Account
+                    key={account.password_id}
+                    website={account.website}
+                    email={account.email}
+                  />
+                );
+              })
+            ) : (
+              <p>No account records.</p>
+            )
+          ) : (
+            accounts.map((account) => {
+              return (
+                <Account
+                  key={account.password_id}
+                  website={account.website}
+                  email={account.email}
+                />
+              );
+            })
+          )}
         </div>
 
         <div className="footer text-center">
