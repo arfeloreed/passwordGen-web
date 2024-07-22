@@ -92,7 +92,7 @@ app.post("/:user_id/add/password", async (req, res) => {
   try {
     const query =
       "INSERT INTO passwords(user_id,website,email,password) VALUES($1,$2,$3,$4)";
-    await db.query(query, [user_id, website, email, password]);
+    await db.query(query, [user_id, website, email.toLowerCase(), password]);
     return res.json({ message: "success" });
   } catch (err) {
     console.error("Can't add password: ", err.message);

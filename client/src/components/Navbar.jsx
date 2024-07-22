@@ -1,20 +1,22 @@
 import React from "react";
 import useSignOut from "react-auth-kit/hooks/useSignOut";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate } from "react-router-dom";
 import useIsAuthenticated from "react-auth-kit/hooks/useIsAuthenticated";
+import { NavLink } from "react-router-dom";
+// import { useNavigate, useLocation } from "react-router";
 
 function Navbar() {
   const signOut = useSignOut();
   const navigate = useNavigate();
   const isAuth = useIsAuthenticated();
-  const location = useLocation();
+  // const location = useLocation();
 
   return (
     <nav className="navbar navbar-expand-lg text-bg-primary" data-bs-theme="dark">
       <div className="container my-1">
-        <a href="/" className="navbar-brand">
+        <NavLink to="/" className="navbar-brand">
           PasswordGen
-        </a>
+        </NavLink>
 
         {isAuth && (
           <>
@@ -44,14 +46,15 @@ function Navbar() {
               <div className="offcanvas-body">
                 <ul className="navbar-nav nav-underline ms-auto align-items-center">
                   <li className="nav-item">
-                    <a
-                      href="/dashboard"
-                      className={`nav-link ${
-                        location.pathname === "/dashboard" && "active"
-                      }`}
+                    <NavLink
+                      to="/dashboard"
+                      className="nav-link"
+                      // className={`nav-link ${
+                      //   location.pathname === "/dashboard" && "active"
+                      // }`}
                     >
                       Dashboard
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="nav-item">
                     <a
