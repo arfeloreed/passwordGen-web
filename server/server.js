@@ -103,12 +103,31 @@ app.post("/:user_id/add/password", async (req, res) => {
 app.get("/dashboard/:user_id/passwords", async (req, res) => {
   const { user_id } = req.params;
   try {
-    const query =
-      "SELECT password_id,website,email,password FROM passwords WHERE user_id=$1";
+    const query = "SELECT password_id,website,email FROM passwords WHERE user_id=$1";
     const result = await db.query(query, [parseInt(user_id)]);
     return res.json({ message: "success", data: result.rows });
   } catch (err) {
     console.error("Can't get passwords for user: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// get account detail for a password with previous passwords
+app.get("/dashboard/account/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    let query = "SELECT website,email,password FROM passwords where password_id=$1";
+    const result1 = await db.query(query, [parseInt(id)]);
+    // update query to get previous passwords
+    query =
+      "SELECT password FROM prev_passwords where password_id=$1 ORDER BY prev_password_id DESC";
+    const result2 = await db.query(query, [parseInt(id)]);
+    return res.json({
+      message: "success",
+      data: result1.rows[0],
+      prevPasswords: result2.rows,
+    });
+  } catch (err) {
+    console.error(err.message);
     return res.json({ message: "error" });
   }
 });

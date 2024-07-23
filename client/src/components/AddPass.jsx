@@ -73,7 +73,6 @@ function AddPass() {
             <input
               type="text"
               name="password"
-              id="password"
               placeholder="Clink generate to get password..."
               className="form-control"
               value={password}

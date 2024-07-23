@@ -18,7 +18,6 @@ function GenPass() {
       <input
         type="text"
         name="password"
-        id="password"
         className="form-control form-control-lg"
         placeholder="Click generate to get your password"
         value={password}
