@@ -63,6 +63,7 @@ function Dashboard() {
                     key={account.password_id}
                     website={account.website}
                     email={account.email}
+                    id={account.password_id}
                   />
                 );
               })
@@ -76,6 +77,7 @@ function Dashboard() {
                   key={account.password_id}
                   website={account.website}
                   email={account.email}
+                  id={account.password_id}
                 />
               );
             })
