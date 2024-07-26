@@ -7,6 +7,7 @@ import { PassGenContext } from "../context/PassGenContext";
 import Navbar from "../components/Navbar";
 import AccountCon from "../components/AccountCon";
 import AccountEdit from "../components/AccountEdit";
+import PrevPass from "../components/PrevPass";
 
 function AccountDetail() {
   const { id } = useParams();
@@ -46,6 +47,17 @@ function AccountDetail() {
           ) : (
             <AccountCon email={data.email} password={data.password} />
           )}
+
+          <div className="genpassBlock mx-auto my-4">
+            <p className="lead">Previous passwords:</p>
+            {passwords.length > 0 ? (
+              passwords.map((pass) => {
+                return <PrevPass key={pass.password} password={pass.password} />;
+              })
+            ) : (
+              <p>No previous passwords.</p>
+            )}
+          </div>
         </div>
 
         <div className="footer text-center">
