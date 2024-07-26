@@ -127,7 +127,42 @@ app.get("/dashboard/account/:id", async (req, res) => {
       prevPasswords: result2.rows,
     });
   } catch (err) {
-    console.error(err.message);
+    console.error("Error connecting to db: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// updating a password
+app.patch("/update/password/:id", async (req, res) => {
+  const { id } = req.params;
+  const { newEmail, password } = req.body;
+  try {
+    let query = "SELECT password FROM passwords WHERE password_id=$1";
+    let result = await db.query(query, [id]);
+    const { password: prevPass } = result.rows[0];
+    query = "UPDATE passwords SET email=$1,password=$2 WHERE password_id=$3";
+    await db.query(query, [newEmail, password, id]);
+    try {
+      query = "INSERT INTO prev_passwords(password_id, password) VALUES($1,$2)";
+      await db.query(query, [id, prevPass]);
+    } catch (err) {
+      console.error("Can't update prev passwords: ", err.message);
+      return res.json({ message: "error" });
+    }
+    return res.json({ message: "success" });
+  } catch (err) {
+    console.error("Can't update passwords: ", err.message);
+    return res.json({ message: "error" });
+  }
+});
+// deleting a password
+app.delete("/account/delete/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const query = "DELETE FROM passwords WHERE password_id=$1";
+    await db.query(query, [parseInt(id)]);
+    return res.json({ message: "success" });
+  } catch (err) {
+    console.error("Can't delete account: ", err.message);
     return res.json({ message: "error" });
   }
 });

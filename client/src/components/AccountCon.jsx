@@ -1,9 +1,24 @@
 import React, { useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 // context
 import { PassGenContext } from "../context/PassGenContext";
 
 function AccountCon({ email, password }) {
   const { setShowEdit } = useContext(PassGenContext);
+  const url = process.env.REACT_APP_URL || "http://localhost:5000";
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  async function handleDelete() {
+    try {
+      const res = await axios.delete(`${url}/account/delete/${id}`);
+      if (res.data.message === "success") navigate(`/dashboard`);
+    } catch (err) {
+      console.log(err.message);
+      alert("Error connecting to server.");
+    }
+  }
 
   return (
     <div
@@ -30,6 +45,7 @@ function AccountCon({ email, password }) {
           autoComplete="false"
         />
       </div>
+
       <div className="mt-3 mb-4 d-flex justify-content-around">
         <button
           type="button"
@@ -38,7 +54,11 @@ function AccountCon({ email, password }) {
         >
           EDIT
         </button>
-        <button type="button" className="btn btn-danger px-4 mt-2 mt-sm-0">
+        <button
+          type="button"
+          className="btn btn-danger px-4 mt-2 mt-sm-0"
+          onClick={handleDelete}
+        >
           DELETE
         </button>
       </div>
