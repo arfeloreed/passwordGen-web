@@ -13,13 +13,14 @@ app.use(cors());
 app.use(express.json());
 
 // db setup
-const db = new pg.Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
-});
+// const db = new pg.Client({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_DATABASE,
+//   password: process.env.DB_PASS,
+//   port: process.env.DB_PORT,
+// });
+const db = new pg.Client({ connectionString: process.env.DATABASE_URL });
 (async () => await db.connect())();
 
 // routes
